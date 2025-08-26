@@ -7,7 +7,7 @@ load_dotenv()
 
 
 class APIClient:
-    def __init__(self, token=None):
+    def __init__(self):
         environment_str = os.getenv('ENVIRONMENT')
         try:
             environment = Environment(environment_str)

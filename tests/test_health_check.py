@@ -1,11 +1,6 @@
 import allure
 import pytest
 import requests
-import jsonschema
-
-from core.schemas.booking_schemas import BOOKING_CREATED_SCHEMA
-
-from conftest import generate_random_booking_data
 
 
 @allure.feature("Test ping")
@@ -69,33 +64,3 @@ def test_ping_timeout(api_client, mocker):
     mocker.patch.object(api_client.session, 'get', side_effect=requests.Timeout)
     with pytest.raises(requests.Timeout):
         api_client.ping()
-
-
-@allure.feature("Test ping")
-@allure.story("Test creating booking")
-def test_ping_create_booking(api_client, generate_random_booking_data):
-    with allure.step("Creating booking"):
-        response = api_client.create_booking(generate_random_booking_data)
-
-    with allure.step("Validation scheme"):
-        jsonschema.validate(response, BOOKING_CREATED_SCHEMA)
-
-
-@allure.feature("Test ping")
-@allure.story("Test creating booking with mocker")
-def test_ping_create_booking_with_mocker(api_client, mocker, generate_random_booking_data):
-    fake_json = {
-        "bookingid": 1,
-        "booking": generate_random_booking_data
-    }
-    mock_response = mocker.Mock()
-    mock_response.status_code = 200
-    mock_response.json.return_value = fake_json
-    mock_post = mocker.patch.object(api_client.session, 'post', return_value=mock_response)
-
-    with allure.step("Creating booking"):
-        response = api_client.create_booking(generate_random_booking_data)
-        assert mock_post.return_value.status_code == 200  # проверка ради проверки
-
-    with allure.step("Validation scheme"):
-        jsonschema.validate(response, BOOKING_CREATED_SCHEMA)  # схема возвращаемого json

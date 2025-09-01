@@ -72,19 +72,13 @@ def test_ping_timeout(api_client, mocker):
 
 
 @allure.feature("Test ping")
-@allure.story("Test creating booking (joke response code 418)")
-def test_ping_create_booking_418(api_client, generate_random_booking_data):
-    booking_data = generate_random_booking_data
-
+@allure.story("Test creating booking")
+def test_ping_create_booking(api_client, generate_random_booking_data):
     with allure.step("Creating booking"):
-        try:
-            response = api_client.create_booking(booking_data)
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 418:
-                pytest.skip("Сервер вернул 418 I'm a teapot — тест пропущен")
+        response = api_client.create_booking(generate_random_booking_data)
 
     with allure.step("Validation scheme"):
-        jsonschema.validate(response.json(), BOOKING_CREATED_SCHEMA)
+        jsonschema.validate(response, BOOKING_CREATED_SCHEMA)
 
 
 @allure.feature("Test ping")

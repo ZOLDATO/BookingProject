@@ -10,7 +10,9 @@ from conftest import generate_random_booking_data, booking_dates
 @allure.feature("Test creating booking")
 @allure.story("Positive test creating booking")
 def test_create_booking(api_client, generate_random_booking_data):
+    booking_data = generate_random_booking_data
     response = api_client.create_booking(generate_random_booking_data)
+    assert response["booking"] == booking_data, "Booking details in request and response do not match"
     jsonschema.validate(response, BOOKING_CREATED_SCHEMA)
 
 

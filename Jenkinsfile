@@ -35,7 +35,7 @@ pipeline {
 
     post {
         always {
-            // Сохранение отчетов о тестировании и любых других артефактов
+            //  Сохранение отчетов о тестировании и любых других артефактов
             archiveArtifacts artifacts: '**/allure-results/**',
             allowEmptyArchive: true
         }

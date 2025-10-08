@@ -90,3 +90,4 @@ def test_create_booking_with_wrong_parameters(test_param, api_client, generate_r
         print()
 
     assert except_data.value.response.status_code == 500, "The server did not return a 500 error"
+
